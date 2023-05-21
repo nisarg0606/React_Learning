@@ -2,13 +2,12 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useFetchUserData } from "../service/userService";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const UserApi = () => {
   const [users, setUsers] = useState([]);
-  //   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [newUser, setNewUser] = useState({
     firstName: "",
@@ -17,24 +16,19 @@ export const UserApi = () => {
     age: "",
   });
 
-  const { data, isLoading, isError } = useFetchUserData();
-
-  useEffect(() => {
-    getData();
-    // console.log(data);
-    console.log("response.data---> ", data);
-  }, [isLoading]);
-
   const getData = async () => {
     try {
-      //   const response = await axios.get(BASE_URL + "/users");
-      //   setUsers(response.data);
-      //   setIsLoading(false);
-      setUsers(data);
+      const response = await axios.get(BASE_URL + "/users");
+      setUsers(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleUpdate = async (userId) => {
     try {
@@ -110,9 +104,6 @@ export const UserApi = () => {
         toast.error("Error adding user");
       }
     }
-    if (resp.status !== 200) {
-      console.error("Error saving user:", resp);
-    }
     getData();
     handleFormClose();
   };
@@ -133,12 +124,9 @@ export const UserApi = () => {
       />
       {/* Same as */}
       <ToastContainer />
-      <h1>Users</h1>
       {isLoading ? (
         <p>Loading...</p>
-      ) : isError ? (
-        <p>Error fetching data</p>
-      ) : users?.length > 0 ? (
+      ) : users.length > 0 ? (
         <table className="table">
           <thead>
             <tr>
