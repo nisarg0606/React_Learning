@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useFetchUserData } from "../service/userService";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const UserApi = () => {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  //   const [isLoading, setIsLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [newUser, setNewUser] = useState({
     firstName: "",
@@ -14,17 +17,20 @@ export const UserApi = () => {
     age: "",
   });
 
+  const { data, isLoading, isError } = useFetchUserData();
+
   useEffect(() => {
     getData();
-  }, []);
+    // console.log(data);
+    console.log("response.data---> ", data);
+  }, [isLoading]);
 
   const getData = async () => {
     try {
-      const response = await axios.get(
-        BASE_URL + "/users"
-      );
-      setUsers(response.data);
-      setIsLoading(false);
+      //   const response = await axios.get(BASE_URL + "/users");
+      //   setUsers(response.data);
+      //   setIsLoading(false);
+      setUsers(data);
     } catch (error) {
       console.error(error);
     }
@@ -38,23 +44,18 @@ export const UserApi = () => {
       // Open the update form and populate with user data
       setIsFormOpen(true);
       setNewUser(userToUpdate);
-      const resp = axios.put(
-        BASE_URL + "/users/" + userId,
-        userToUpdate
-      );
-      resp.then((response) => {
-        console.log(response);
-        getData();
-      });
     } catch (error) {
       console.error("Error updating user:", error);
     }
   };
 
   const handleDelete = (userId) => {
-    const resp = axios.delete(
-      BASE_URL + "/users/" + userId
-    );
+    const resp = axios.delete(BASE_URL + "/users/" + userId);
+    if (resp.status === 200) {
+      toast.success("User deleted successfully");
+    } else {
+      toast.error("Error deleting user");
+    }
     resp.then((response) => {
       console.log(response);
       getData();
@@ -94,16 +95,20 @@ export const UserApi = () => {
     let resp = null;
     if (newUser._id) {
       // Update user
-      resp = await axios.put(
-        BASE_URL + "/users/" + newUser._id,
-        newUser
-      );
+      resp = await axios.put(BASE_URL + "/users/" + newUser._id, newUser);
+      if (resp.status === 200) {
+        toast.success("User updated successfully");
+      } else {
+        toast.error("Error updating user");
+      }
     } else {
       // Add user
-      resp = await axios.post(
-        BASE_URL + "/users",
-        newUser
-      );
+      resp = await axios.post(BASE_URL + "/users", newUser);
+      if (resp.status === 201) {
+        toast.success("User added successfully");
+      } else {
+        toast.error("Error adding user");
+      }
     }
     if (resp.status !== 200) {
       console.error("Error saving user:", resp);
@@ -114,9 +119,26 @@ export const UserApi = () => {
 
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
+      <h1>Users</h1>
       {isLoading ? (
         <p>Loading...</p>
-      ) : users.length > 0 ? (
+      ) : isError ? (
+        <p>Error fetching data</p>
+      ) : users?.length > 0 ? (
         <table className="table">
           <thead>
             <tr>
@@ -129,7 +151,7 @@ export const UserApi = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {users?.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.firstName}</td>
@@ -143,7 +165,7 @@ export const UserApi = () => {
                   >
                     Update
                   </button>
-                    &nbsp;
+                  &nbsp;
                   <button
                     className="btn btn-danger"
                     onClick={() => handleDelete(user._id)}
