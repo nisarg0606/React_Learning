@@ -8,7 +8,7 @@ export const Navbar = () => {
         <Link className="navbar-brand" to="/dashboard">
           NavBar
         </Link>
-        <button
+        {/* <button
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
@@ -18,7 +18,7 @@ export const Navbar = () => {
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
-        </button>
+        </button> */}
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
@@ -31,6 +31,16 @@ export const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/users">
                 Users
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/usequery/users">
+                Get Users using Fetch
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/usequery/adduser">
+                Add Users using Mutation
               </Link>
             </li>
             {/* <li className="nav-item dropdown">
