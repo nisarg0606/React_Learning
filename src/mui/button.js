@@ -1,4 +1,5 @@
-import { Button } from "@mui/material";
+import { Button, styled } from "@mui/material";
+import { blue } from "@mui/material/colors";
 
 export const ButtonText = ({ value }) => {
   return <Button variant="text"> {value} </Button>;
@@ -121,3 +122,11 @@ export const ButtonContainedSuccess = ({ value }) => {
     </Button>
   );
 };
+
+export const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(blue[500]),
+  backgroundColor: blue[500],
+  "&:hover": {
+    backgroundColor: blue[700],
+  },
+}));

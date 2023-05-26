@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonContained, ButtonContainedError, ButtonContainedLarge, ButtonContainedSecondary, ButtonOutlined, ButtonText, ButtonTextSmall } from './button'
+import { ButtonContained, ButtonContainedError, ButtonContainedLarge, ButtonContainedSecondary, ButtonOutlined, ButtonText, ButtonTextSmall, ColorButton } from './button'
 
 export const ButtonExample = () => {
     return (
@@ -25,7 +25,11 @@ export const ButtonExample = () => {
             <br />
             <ButtonTextSmall value="Button Text Small" />
             <br />
+            <br />
             <ButtonContainedLarge value="Button Large Changed" />
+            <br />
+            <br />
+            <ColorButton variant='contained'> Custom Color </ColorButton>
         </div>
     )
 }
