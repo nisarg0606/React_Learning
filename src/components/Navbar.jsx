@@ -43,6 +43,11 @@ export const Navbar = () => {
                 Add Users using Mutation
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/mui">
+                Material UI
+              </Link>
+            </li>
             {/* <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"

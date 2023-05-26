@@ -8,7 +8,7 @@ import { DashBoard } from "./components/DashBoard";
 import { UserFetch } from "./api/query/UserFetch";
 import { UpdateUser } from "./api/query/UpdateUser";
 import { UserAdd } from "./api/query/UserAdd";
-
+import { ButtonExample } from "./mui/ButtonExample";
 function App() {
   return (
     <div className="App">
@@ -22,6 +22,7 @@ function App() {
         <Route path="/usequery/users" element={<UserFetch />} />
         <Route path="/usequery/updateuser/:id" element={<UpdateUser />} />
         <Route path="/usequery/adduser" element={<UserAdd />} />
+        <Route path="/mui" element={<ButtonExample/>} />
         <Route path="/*" element={<h1>Not Found</h1>} />
       </Routes>
     </div>
